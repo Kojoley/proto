@@ -33,6 +33,7 @@
 #include <boost/proto/traits.hpp>
 #include <boost/proto/generate.hpp>
 #include <boost/proto/detail/remove_typename.hpp>
+#include <boost/proto/make_expr.hpp>
 
 #if defined(_MSC_VER)
 # pragma warning(push)
@@ -265,8 +266,8 @@ namespace boost { namespace proto
                     proto_domain                                                                    \
                   , boost::proto::tag::assign                                                       \
                   , boost::proto::list2<                                                            \
-                        proto_derived_expr ThisConst() &                                            \
-                      , typename boost::proto::result_of::as_child<A ThatConst(), proto_domain>::type \
+                        typename boost::proto::detail::protoify<proto_derived_expr ThisConst() &, proto_domain>::result_type \
+                      , typename boost::proto::detail::protoify<A ThatConst() &, proto_domain>::result_type \
                     >                                                                               \
                 >::type                                                                             \
             )                                                                                       \
@@ -278,14 +279,14 @@ namespace boost { namespace proto
                     proto_domain                                                                    \
                   , boost::proto::tag::assign                                                       \
                   , boost::proto::list2<                                                            \
-                        proto_derived_expr ThisConst() &                                            \
-                      , typename boost::proto::result_of::as_child<A ThatConst(), proto_domain>::type \
+                        typename boost::proto::detail::protoify<proto_derived_expr ThisConst() &, proto_domain>::result_type \
+                      , typename boost::proto::detail::protoify<A ThatConst() &, proto_domain>::result_type \
                     >                                                                               \
                 >::type                                                                             \
             that_type;                                                                              \
             that_type const that = {                                                                \
-                *static_cast<proto_derived_expr ThisConst() *>(this)                                \
-              , boost::proto::as_child<proto_domain>(a)                                             \
+                boost::proto::detail::protoify<proto_derived_expr ThisConst() &, proto_domain>()(*static_cast<proto_derived_expr ThisConst() *>(this)) \
+              , boost::proto::detail::protoify<A ThatConst() &, proto_domain>()(a)                  \
             };                                                                                      \
             return proto_generator()(that);                                                         \
         }                                                                                           \
@@ -332,8 +333,8 @@ namespace boost { namespace proto
                     proto_domain                                                                    \
                   , boost::proto::tag::subscript                                                    \
                   , boost::proto::list2<                                                            \
-                        proto_derived_expr ThisConst() &                                            \
-                      , typename boost::proto::result_of::as_child<A ThatConst(), proto_domain>::type \
+                        typename boost::proto::detail::protoify<proto_derived_expr ThisConst() &, proto_domain>::result_type \
+                      , typename boost::proto::detail::protoify<A ThatConst() &, proto_domain>::result_type \
                     >                                                                               \
                 >::type                                                                             \
             )                                                                                       \
@@ -345,14 +346,14 @@ namespace boost { namespace proto
                     proto_domain                                                                    \
                   , boost::proto::tag::subscript                                                    \
                   , boost::proto::list2<                                                            \
-                        proto_derived_expr ThisConst() &                                            \
-                      , typename boost::proto::result_of::as_child<A ThatConst(), proto_domain>::type \
+                        typename boost::proto::detail::protoify<proto_derived_expr ThisConst() &, proto_domain>::result_type \
+                      , typename boost::proto::detail::protoify<A ThatConst() &, proto_domain>::result_type \
                     >                                                                               \
                 >::type                                                                             \
             that_type;                                                                              \
             that_type const that = {                                                                \
-                *static_cast<proto_derived_expr ThisConst() *>(this)                                \
-              , boost::proto::as_child<proto_domain>(a)                                             \
+                boost::proto::detail::protoify<proto_derived_expr ThisConst() &, proto_domain>()(*static_cast<proto_derived_expr ThisConst() *>(this)) \
+              , boost::proto::detail::protoify<A ThatConst() &, proto_domain>()(a)                  \
             };                                                                                      \
             return proto_generator()(that);                                                         \
         }                                                                                           \
